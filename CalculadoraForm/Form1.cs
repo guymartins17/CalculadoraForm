@@ -23,11 +23,40 @@ namespace CalculadoraForm
 
         private void btnIgual_Click(object sender, EventArgs e)
         {
-            // Implementar depois...
+            try
+            {
+                // Obter o resultados de todos os operadores:
+                string expressao = txbTela.Text;
+
+                // Criar um DataTable para usar o método Compute:
+                var dt = new System.Data.DataTable();
+
+                // Calcular a expressão:
+                var resultado = dt.Compute(expressao, "");
+                              
+                // Mostrar na tela:
+                txbTela.Text = resultado.ToString();
+
+                // Verificar se a divisão foi feita por zero, e mostrar o erro:
+                if (txbTela.Text == "∞")
+                {
+                    btnLimpar.PerformClick();
+                    MessageBox.Show("Impossível divir por zero!", "Erro!",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                // "levantar a bandeirinha"
+                operadorClicado = true;
+            }           
+            catch
+            {
+                MessageBox.Show("Expressão inválida!");
+                txbTela.Text = "";
+            }          
         }
 
         private void numero_Click(object sender, EventArgs e)
         {
+           
             // Obter o botão que está chamando esse evento:
             Button botaoClicado = (Button)sender;
 
@@ -53,6 +82,14 @@ namespace CalculadoraForm
                 operadorClicado = true;
             }   
             
+        }
+
+        private void btnLimpar_Click(object sender, EventArgs e)
+        {
+            // Limpar a tela:
+            txbTela.Text = "";
+            // Voltar o operador clicado para true:
+            operadorClicado = true;
         }
     }
 }
